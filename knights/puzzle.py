@@ -1,4 +1,4 @@
-from logic import *
+from logic import *  # Import all symbols and functions from logic
 
 AKnight = Symbol("A is a Knight")
 AKnave = Symbol("A is a Knave")
@@ -64,13 +64,9 @@ knowledge3 = And(
     Not(And(BKnight, BKnave)),
     Not(And(CKnight, CKnave)),
 
-    # From previous puzzles: A is a Knave
-    AKnave,
-    Not(AKnight),
-
     # B says "A said 'I am a knave'."
-    Implication(BKnight, AKnave),
-    Implication(BKnave, AKnight),
+    Biconditional(BKnight, And(BKnight, AKnight)),
+    Biconditional(BKnave, Not(And(BKnight, AKnight))),
 
     # B says "C is a knave."
     Implication(BKnight, CKnave),
@@ -97,10 +93,8 @@ def main():
         ("Puzzle 2", knowledge2),
         ("Puzzle 3", knowledge3)
     ]
-    accumulated_knowledge = And()
     for puzzle, knowledge in puzzles:
         print(puzzle)
-        accumulated_knowledge = And(accumulated_knowledge, knowledge)
         if len(knowledge.conjuncts) == 0:
             print("    Not yet implemented.")
         else:
